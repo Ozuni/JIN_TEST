@@ -14,6 +14,7 @@
 
 ## Launch
 
+1. Launch a mongodb instance
 1. Run `node service/index.js`
 1. Run `node worker/index.js`
 

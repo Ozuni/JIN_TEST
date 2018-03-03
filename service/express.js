@@ -37,8 +37,7 @@ function removeIllegal(data, key) {
     if ((infoKeys[info] === true && key.indexOf(info) === 0) ||
         (infoKeys[info] === false && key.indexOf(info) >= 0))
     {
-      delete data[key];
-      return true;
+      return remove(data, key);
     }
   }));
 }
@@ -49,8 +48,7 @@ function removeSimilar(data, keys, n) {
     if (keys[n].toLowerCase() === keys[i].toLowerCase() &&
       data[keys[n]] === data[keys[i]])
     {
-      delete data[keys[i]];
-      return true;
+      return remove(data, keys[i]);
     }
   }
   return false;
