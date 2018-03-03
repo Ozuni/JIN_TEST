@@ -6,14 +6,28 @@ const port = 8080;
 const infoKeys = {
   '#': true,
   '@': true,
+  'meta': true,
   ':': false,
 }
 
-function removeEmpty(data, keys, n) {
-  if (!data[keys[n]])
+function remove(data, key)
+{
+  delete data[key];
+  return true;
+}
+
+function removeEmpty(data, key) {
+  if (!data[key])
   {
-    delete data[keys[n]];
-    return true;
+    return remove(data, key);
+  }
+  if (Array.isArray(data[key]) && data[key].length === 0)
+  {
+    return remove(data, key);
+  }
+  if (typeof data[key] === 'object' && Object.keys(data[key]).length === 0)
+  {
+    return remove(data, key);
   }
   return false;
 }
@@ -43,13 +57,12 @@ function removeSimilar(data, keys, n) {
 }
 
 function normalize(data) {
-  data = data.meta ? data.meta : data;
   let keys = Object.keys(data);
 
   for (let n = 0; n < keys.length; n++)
   {
     let removed = false;
-    removed = removeEmpty(data, keys, n)
+    removed = removeEmpty(data, keys[n]);
 
     if (!removed)
     {
@@ -58,7 +71,7 @@ function normalize(data) {
 
     if (!removed)
     {
-      removeSimilar(data, keys, n)
+      removeSimilar(data, keys, n);
     }
   }
   return data;
